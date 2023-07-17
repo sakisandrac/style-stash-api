@@ -23,7 +23,7 @@ module.exports = [
       {
         id: "PIE-onepiece-ex-1",
         image: "./romper.JPG",
-        categoryID: "CAT-onePieces",
+        categoryID: "CAT-onepieces",
         notes: ""
       },
       {
@@ -61,7 +61,7 @@ module.exports = [
       {id: 'CAT-pants', name: 'Pants'},
       {id: 'CAT-tops', name: 'Tops'},
       {id: 'CAT-skirts', name: 'Skirts'},
-      {id: 'CAT-onePieces', name: 'One Pieces'},
+      {id: 'CAT-onepieces', name: 'One Pieces'},
       {id: 'CAT-shoes', name: 'Shoes'},
       {id: 'CAT-bags', name: 'Bags'},
       {id: 'CAT-accessories', name: 'Accessories'},
