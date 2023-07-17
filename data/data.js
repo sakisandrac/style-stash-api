@@ -1,5 +1,6 @@
 module.exports = [
   {
+    userID: 'USE-user-ex-1',
     pieces: [
       {
       id: "PIE-pants-ex-1",
