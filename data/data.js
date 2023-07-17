@@ -35,25 +35,25 @@ module.exports = [
       {
         id: "PIE-bag-ex-1",
         image: "./bag.JPG",
-        category: "CAT-bags",
+        categoryID: "CAT-bags",
         notes: ""
       },
       {
         id: "PIE-accessories-ex-1",
         image: "./necklace.jpg",
-        category: "CAT-accessories",
+        categoryID: "CAT-accessories",
         notes: ""
       },
       {
         id: "PIE-outerwear-ex-1",
         image: "./jacket.JPG",
-        category: "CAT-outerwear",
+        categoryID: "CAT-outerwear",
         notes: ""
       },
       {
         id: "PIE-misc-ex-1",
         image: "./hat.JPG",
-        category: "CAT-miscellaneous",
+        categoryID: "CAT-miscellaneous",
         notes: ""
       }
     ],
