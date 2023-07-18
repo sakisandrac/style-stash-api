@@ -12,10 +12,20 @@ app.locals = {
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/v1/data/closet', (req, res) => {
+app.get('/api/v1/data/closet/', (req, res) => {
   const { data } = app.locals;
-  const closetData = data[0].closet 
+  const closetData = data[0].pieces;
+
   res.status(200).json({ closetData });
+});
+
+app.get('/api/v1/data/closet/:category', (req, res) => {
+  const { data } = app.locals;
+  const closetData = data[0].pieces 
+  const category = req.params.category
+  const filteredPieces = closetData.filter(piece => piece.categoryID === `CAT-${category}`)
+
+  res.status(200).json({ filteredPieces })
 });
 
 app.get('/api/v1/data/outfits', (req, res) => {
@@ -26,8 +36,8 @@ app.get('/api/v1/data/outfits', (req, res) => {
 
 
 app.post('/api/v1/data/closet', (req, res) => {
-  const { image, category, id, notes } = req.body;
-  const requiredProperties = ['image', 'category', 'id'];
+  const { image, categoryID, id, notes } = req.body;
+  const requiredProperties = ['image', 'categoryID', 'id'];
 
   for (let requiredParameter of requiredProperties) {
     if (req.body[requiredParameter] === undefined) {
@@ -37,15 +47,14 @@ app.post('/api/v1/data/closet', (req, res) => {
     }
   }
 
-  //will need to change push if more than 1 user
-  if (!app.locals.data[0].closet[category].some(item => item.id === id)) {
-    app.locals.data[0].closet[category].push({ id, image, category, notes })
+  if (!app.locals.data[0].pieces.some(piece => piece.id === id)) {
+    app.locals.data[0].pieces.push({ id, image, categoryID, notes })
     res.status(201).json({
       message: `${id} Item added!`,
       newData: {
         id,
         image,
-        category,
+        categoryID,
         notes,
       }
     });
