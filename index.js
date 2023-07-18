@@ -103,6 +103,27 @@ app.post('/api/v1/data/outfit-to-pieces', (req, res) => {
   })
 })
 
+app.patch('/api/v1/data/outfit/:id', (req,res) => {
+  const { id } = req.params;
+  const { fullOutfitImage } = req.body
+  const { data } = app.locals;
+
+  if(!outfitExists(id)) {
+    res.status(404).json({
+      message: 'Error: Outfit not found!'
+    })
+  }
+
+  const foundOutfit = data[0].outfits.find(outfit => outfit.id === id)
+  foundOutfit.fullOutfitImage = fullOutfitImage
+
+  res.status(201).json({
+    message: 'Success! Full outfit image updated.', 
+    newData: {id, fullOutfitImage}
+  })
+
+})
+
 // app.delete('/api/v1/data/:id', (req, res) => {
 //   const  { id } = req.params;
 //   const { data } = app.locals;
