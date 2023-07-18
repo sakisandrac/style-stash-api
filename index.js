@@ -1,8 +1,15 @@
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT || 3003;
 const app = express();
 const data = require('./data/data');
+const checkID = (type) => {
+  return (id) => data[0][type].find(item => item.id === id)
+}
+
+const outfitExists = checkID('outfits')
+const pieceExists = checkID('pieces')
 
 app.locals = {
   title: 'Data',
@@ -51,6 +58,49 @@ app.post('/api/v1/data/closet', (req, res) => {
     });
   }
   console.log(newData)
+})
+
+app.post('/api/v1/data/outfits', (req, res) => {
+  const {id, fullOutfitImage, notes} = req.body
+  const {data} = app.locals
+
+  if(outfitExists(id)) {
+    res.status(400).json({
+      message: `Error: Outfit already exists!`
+    })
+  }
+  
+  data[0].outfits.push({id, fullOutfitImage, notes})
+  
+  res.status(201).json({
+    message: `${id} Outfit added!`,
+    newData: {id, fullOutfitImage, notes}
+  })
+  
+})
+
+app.post('/api/v1/data/outfit-to-pieces', (req, res) => {
+  const {outfitID, pieceID} = req.body
+  const {data} = app.locals
+  const otpID = uuidv4()
+
+  if(!pieceExists(pieceID)) {
+    return res.status(404).json({
+      message: 'Error: Piece not found!'
+    })
+  }
+
+  if(!outfitExists(outfitID)) {
+    res.status(404).json({
+      message: 'Error: Outfit not found!'
+    })
+  }
+
+  data[0].outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
+  res.status(201).json({
+    message: `OTP-${otpID} Outfit to piece relationship added!`,
+    newData: {id:`OTP-${otpID}`, outfitID, pieceID}
+  })
 })
 
 // app.delete('/api/v1/data/:id', (req, res) => {
