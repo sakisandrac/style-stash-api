@@ -124,6 +124,28 @@ app.patch('/api/v1/data/outfit/:id', (req,res) => {
 
 })
 
+app.delete('/api/v1/data/outfit-to-pieces', (req, res) => {
+  const {outfitID, pieceID} = req.body
+  const {data} = app.locals
+
+  const foundOutfitToPiece = data[0].outfitToPieces.find(combo => 
+    combo.outfitID === outfitID && combo.pieceID === pieceID
+  )
+
+  if(!foundOutfitToPiece) {
+    res.status(404).json({
+      message: 'Error: Outfit to piece not found! Relationship nonexistant'
+    })
+  }
+
+  data[0].outfitToPieces.splice(data[0].outfitToPieces.indexOf(foundOutfitToPiece), 1)
+
+  res.status(201).json({
+    message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
+    newData: data[0].outfitToPieces.filter(combo => combo.outfitID === outfitID)
+  })
+})
+
 // app.delete('/api/v1/data/:id', (req, res) => {
 //   const  { id } = req.params;
 //   const { data } = app.locals;
