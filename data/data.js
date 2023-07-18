@@ -80,8 +80,8 @@ module.exports = [
       {id: "OTP-otp-ex-9", outfitID: "OUT-outfit-ex-2", pieceID: 'PIE-bags-ex-1'},
     ],
     outfits: [
-      {id: "outfit-ex-1", fullOutfitImage: "./outfit.JPG"},
-      {id: "outfit-ex-2", fullOutfitImage: "./outfit2.png"}
+      {id: "OUT-outfit-ex-1", fullOutfitImage: "./outfit.JPG"},
+      {id: "OUT-outfit-ex-2", fullOutfitImage: "./outfit2.png"}
     ]
   }
 ]

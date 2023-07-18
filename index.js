@@ -12,10 +12,21 @@ app.locals = {
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/v1/data/closet', (req, res) => {
+app.get('/api/v1/data/closet/', (req, res) => {
   const { data } = app.locals;
   const closetData = data[0].pieces 
+  // const filteredPieces = data[0].pieces.filter(piece => )
   res.status(200).json({ closetData });
+
+});
+
+app.get('/api/v1/data/closet/:category', (req, res) => {
+  const { data } = app.locals;
+  const closetData = data[0].pieces 
+  const category = req.params.category
+  const filteredPieces = closetData.filter(piece => piece.categoryID === `CAT-${category}`)
+
+  res.status(200).json({ filteredPieces });
 });
 
 app.get('/api/v1/data/outfits', (req, res) => {
@@ -37,9 +48,6 @@ app.post('/api/v1/data/closet', (req, res) => {
     }
   }
 
-
-
-  //will need to change push if more than 1 user
   if (!app.locals.data[0].pieces.some(piece => piece.id === id)) {
     app.locals.data[0].pieces.push({ id, image, categoryID, notes })
     res.status(201).json({
