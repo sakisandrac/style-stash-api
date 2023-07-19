@@ -19,11 +19,11 @@ app.get('/api/v1/data/closet/', (req, res) => {
   res.status(200).json({ closetData });
 });
 
-app.get('/api/v1/data/closet/:category', (req, res) => {
+app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   const { data } = app.locals;
-  const closetData = data[0].pieces 
-  const category = req.params.category
-  const filteredPieces = closetData.filter(piece => piece.categoryID === `CAT-${category}`)
+  const { category, userID }  = req.params;
+  const closetData = data.filter(user => user.userID === userID )
+  const filteredPieces = closetData[0].pieces.filter(piece => piece.categoryID === `CAT-${category}`)
 
   res.status(200).json({ filteredPieces })
 });
