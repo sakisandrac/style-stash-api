@@ -1,58 +1,59 @@
 module.exports = [
   {
     userID: 'USE-user-ex-1',
+    credentials: {username: 'user1', password: '1234'},
     pieces: [
       {
       id: "PIE-pants-ex-1",
-      image: "./pants.JPG",
+      image: "https://i.imgur.com/ddninn4.jpg",
       categoryID: 'CAT-pants',
       notes: ""
       }, 
       {
         id: "PIE-tops-ex-1",
-        image: "./top.JPG",
+        image: "https://i.imgur.com/mCvW03T.jpg",
         categoryID: "CAT-tops",
         notes: ""
       },
       {
         id: "PIE-skirts-ex-1",
-        image: "./skirt.JPG",
+        image: "https://i.imgur.com/GVKEPiN.jpg",
         categoryID: "CAT-skirts",
         notes: ""
       },
       {
         id: "PIE-onepiece-ex-1",
-        image: "./romper.JPG",
+        image: "https://i.imgur.com/mroP74J.jpg",
         categoryID: "CAT-onepieces",
         notes: ""
       },
       {
         id: "PIE-shoes-ex-1",
-        image: "./shoes.JPG",
+        image: "https://i.imgur.com/xQNPDND.jpg",
         categoryID: "CAT-shoes",
         notes: ""
       },
       {
         id: "PIE-bag-ex-1",
-        image: "./bag.JPG",
+        image: "https://i.imgur.com/tjrHoPs.jpg",
         categoryID: "CAT-bags",
         notes: ""
       },
       {
         id: "PIE-accessories-ex-1",
-        image: "./necklace.jpg",
+        image: "https://i.imgur.com/aWoR9up.jpg",
         categoryID: "CAT-accessories",
         notes: ""
       },
       {
         id: "PIE-outerwear-ex-1",
-        image: "./jacket.JPG",
+        image: "https://i.imgur.com/Tm2gIqW.jpg",
         categoryID: "CAT-outerwear",
         notes: ""
       },
       {
         id: "PIE-misc-ex-1",
-        image: "./hat.JPG",
+        image: "https://i.imgur.com/eSO0N4s.jpg",
         categoryID: "CAT-miscellaneous",
         notes: ""
       }

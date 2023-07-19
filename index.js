@@ -26,11 +26,11 @@ app.get('/api/v1/data/closet/', (req, res) => {
   res.status(200).json({ closetData });
 });
 
-app.get('/api/v1/data/closet/:category', (req, res) => {
+app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   const { data } = app.locals;
-  const closetData = data[0].pieces 
-  const category = req.params.category
-  const filteredPieces = closetData.filter(piece => piece.categoryID === `CAT-${category}`)
+  const { category, userID }  = req.params;
+  const closetData = data.filter(user => user.userID === userID )
+  const filteredPieces = closetData[0].pieces.filter(piece => piece.categoryID === `CAT-${category}`)
 
   res.status(200).json({ filteredPieces })
 });
@@ -67,6 +67,22 @@ app.post('/api/v1/data/closet', (req, res) => {
     });
   }
   console.log(newData)
+})
+
+app.post('/api/v1/data/user', (req, res) => {
+  const { data } = app.locals;
+  const { username, password } = req.body;
+  console.log(username, password)
+
+  const credentialsFound = data.filter(user => {
+    return user.credentials.username === username && user.credentials.password === password
+  })
+  
+  if(credentialsFound.length > 0) {
+    res.status(201).json({credentialsFound});
+  } else {
+    res.status(422).json({message: 'Username or Password incorrect'})
+  }
 })
 
 app.post('/api/v1/data/outfits', (req, res) => {
