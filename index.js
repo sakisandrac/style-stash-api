@@ -35,9 +35,11 @@ app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   res.status(200).json({ filteredPieces })
 });
 
-app.get('/api/v1/data/outfits', (req, res) => {
+app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { data } = app.locals;
-  const outfitData = data[0].outfits
+  const { userID } = req.params
+
+  const outfitData = data.find(user => user.userID === userID).outfits
   res.status(200).json({ outfitData });
 });
 
