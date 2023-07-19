@@ -76,38 +76,7 @@ app.post('/api/v1/data/user', (req, res) => {
   } else {
     res.status(422).json({message: 'Username or Password incorrect'})
   }
-
-
-  // if (!app.locals.data[0].pieces.some(piece => piece.id === id)) {
-  //   app.locals.data[0].pieces.push({ id, image, categoryID, notes })
-  //   res.status(201).json({
-  //     message: `${id} Item added!`,
-  //     newData: {
-  //       id,
-  //       image,
-  //       categoryID,
-  //       notes,
-  //     }
-  //   });
-  // }
-  // console.log(newData)
 })
-
-// app.delete('/api/v1/data/:id', (req, res) => {
-//   const  { id } = req.params;
-//   const { data } = app.locals;
-
-//   const filteredIdeas = ideas.filter(idea => {
-//     return idea.id !== parseInt(id)
-//   })
-
-//   app.locals.ideas = filteredIdeas
-
-//   res.status(200).json({
-//     message: `Idea #${id} has deleted`,
-//     ideas: filteredIdeas
-//   })
-// })
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
