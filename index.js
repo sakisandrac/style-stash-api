@@ -62,6 +62,37 @@ app.post('/api/v1/data/closet', (req, res) => {
   console.log(newData)
 })
 
+app.post('/api/v1/data/user', (req, res) => {
+  const { data } = app.locals;
+  const { username, password } = req.body;
+  console.log(username, password)
+
+  const credentialsFound = data.filter(user => {
+    return user.credentials.username === username && user.credentials.password === password
+  })
+  
+  if(credentialsFound.length > 0) {
+    res.status(201).json({credentialsFound});
+  } else {
+    res.status(422).json({message: 'Username or Password incorrect'})
+  }
+
+
+  // if (!app.locals.data[0].pieces.some(piece => piece.id === id)) {
+  //   app.locals.data[0].pieces.push({ id, image, categoryID, notes })
+  //   res.status(201).json({
+  //     message: `${id} Item added!`,
+  //     newData: {
+  //       id,
+  //       image,
+  //       categoryID,
+  //       notes,
+  //     }
+  //   });
+  // }
+  // console.log(newData)
+})
+
 // app.delete('/api/v1/data/:id', (req, res) => {
 //   const  { id } = req.params;
 //   const { data } = app.locals;
