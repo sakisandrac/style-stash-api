@@ -5,7 +5,10 @@ const port = process.env.PORT || 3003;
 const app = express();
 const data = require('./data/data');
 const checkID = (type) => {
-  return (id) => data[0][type].find(item => item.id === id)
+  return (itemID, userID) => {
+    const user = data.find(user => user.userID === userID)
+    return user[type].find(item => item.id === itemID)
+  }
 }
 
 const outfitExists = checkID('outfits')
@@ -40,6 +43,7 @@ app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { userID } = req.params
 
   const outfitData = data.find(user => user.userID === userID).outfits
+
   res.status(200).json({ outfitData });
 });
 
@@ -68,13 +72,11 @@ app.post('/api/v1/data/closet', (req, res) => {
       }
     });
   }
-  console.log(newData)
 })
 
 app.post('/api/v1/data/user', (req, res) => {
   const { data } = app.locals;
   const { username, password } = req.body;
-  console.log(username, password)
 
   const credentialsFound = data.filter(user => {
     return user.credentials.username === username && user.credentials.password === password
@@ -87,17 +89,18 @@ app.post('/api/v1/data/user', (req, res) => {
   }
 })
 
-app.post('/api/v1/data/outfits', (req, res) => {
+app.post('/api/v1/data/outfits/:userID', (req, res) => {
+  const {userID} = req.params
   const {id, fullOutfitImage, notes} = req.body
   const {data} = app.locals
 
-  if(outfitExists(id)) {
+  if(outfitExists(id, userID)) {
     res.status(400).json({
       message: `Error: Outfit already exists!`
     })
   }
-  
-  data[0].outfits.push({id, fullOutfitImage, notes})
+  const user = data.find(user => user.userID === userID)
+  user.outfits.push({id, fullOutfitImage, notes})
   
   res.status(201).json({
     message: `${id} Outfit added!`,
@@ -106,52 +109,55 @@ app.post('/api/v1/data/outfits', (req, res) => {
   
 })
 
-app.post('/api/v1/data/outfit-to-pieces', (req, res) => {
+app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
+  const {userID} = req.params
   const {outfitID, pieceID} = req.body
   const {data} = app.locals
   const otpID = uuidv4()
 
-  if(!pieceExists(pieceID)) {
+  if(!pieceExists(pieceID, userID)) {
     return res.status(404).json({
       message: 'Error: Piece not found!'
     })
   }
 
-  if(!outfitExists(outfitID)) {
+  if(!outfitExists(outfitID, userID)) {
     res.status(404).json({
       message: 'Error: Outfit not found!'
     })
   }
-
-  data[0].outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
+  const user = data.find(user => user.userID === userID)
+  user.outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
   res.status(201).json({
     message: `OTP-${otpID} Outfit to piece relationship added!`,
     newData: {id:`OTP-${otpID}`, outfitID, pieceID}
   })
 })
 
-app.patch('/api/v1/data/outfit/:id', (req,res) => {
-  const { id } = req.params;
+app.patch('/api/v1/data/outfit/:outfitID/:userID', (req,res) => {
+  const { outfitID, userID } = req.params;
   const { fullOutfitImage } = req.body
   const { data } = app.locals;
 
-  if(!outfitExists(id)) {
+  if(!outfitExists(outfitID, userID)) {
     res.status(404).json({
       message: 'Error: Outfit not found!'
     })
   }
 
-  const foundOutfit = data[0].outfits.find(outfit => outfit.id === id)
+  const user = data.find(user => user.userID === userID)
+  const foundOutfit = user.outfits.find(outfit => outfit.id === outfitID)
   foundOutfit.fullOutfitImage = fullOutfitImage
 
   res.status(201).json({
     message: 'Success! Full outfit image updated.', 
-    newData: {id, fullOutfitImage}
+    newData: {outfitID, fullOutfitImage}
   })
 
 })
 
-app.delete('/api/v1/data/outfit-to-pieces', (req, res) => {
+app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
+  const {userID} = req.params
   const {outfitID, pieceID} = req.body
   const {data} = app.locals
 
@@ -165,7 +171,8 @@ app.delete('/api/v1/data/outfit-to-pieces', (req, res) => {
     })
   }
 
-  data[0].outfitToPieces.splice(data[0].outfitToPieces.indexOf(foundOutfitToPiece), 1)
+  const user = data.find(user => user.userID === userID)
+  user.outfitToPieces.splice(data[0].outfitToPieces.indexOf(foundOutfitToPiece), 1)
 
   res.status(201).json({
     message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
