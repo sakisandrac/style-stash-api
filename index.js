@@ -42,7 +42,6 @@ app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const outfitData = user.outfits
   // console.log(outfitData)
   const allData = outfitData.map(outfit => {
-    
     const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfit.id)
     const outfitPieces = foundOTP.reduce((arr, piece) => {
       const foundPieces = user.pieces.find(item => item.id === piece.pieceID)
@@ -57,9 +56,9 @@ app.get('/api/v1/data/outfits/:userID', (req, res) => {
 
 app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
   const { data } = app.locals;
-  const {userID, outfitID} = req.params;
-
+  const { userID, outfitID } = req.params;
   const user = data.find(user => user.userID === userID)
+  const outfitData = user.outfits
 
   const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfitID)
   const outfitPieces = foundOTP.reduce((arr, piece) => {
@@ -68,7 +67,7 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
     return arr
   },[])
  
-  res.status(200).json({outfitPieces});
+  res.status(200).json({outfitData, outfitPieces});
 });
 
 // send back this info based on ID of outfit and userID to the FE:
