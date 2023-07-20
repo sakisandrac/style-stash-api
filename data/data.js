@@ -7,7 +7,7 @@ module.exports = [
       id: "PIE-pants-ex-1",
       image: "https://i.imgur.com/ddninn4.jpg",
       categoryID: 'CAT-pants',
-      notes: ""
+      notes: "These pants are a great conversation starter piece! here are some really really really really really really erally really really really really long notes for this piece of pants!"
       }, 
       {
         id: "PIE-tops-ex-1",
