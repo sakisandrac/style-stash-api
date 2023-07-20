@@ -59,14 +59,54 @@ app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
   
 })
 
+
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { data } = app.locals;
-  const { userID } = req.params
+  const { userID } = req.params;
+  const user = data.find(user => user.userID === userID)
+  const outfitData = user.outfits
+  // console.log(outfitData)
+  const allData = outfitData.map(outfit => {
+    const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfit.id)
+    const outfitPieces = foundOTP.reduce((arr, piece) => {
+      const foundPieces = user.pieces.find(item => item.id === piece.pieceID)
+        arr.push(foundPieces)
+      return arr
+    },[])
+    return { outfit, outfitPieces }
+  })
 
-  const outfitData = data.find(user => user.userID === userID).outfits
-
-  res.status(200).json({ outfitData });
+  res.status(200).json({ allData });
 });
+
+app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
+  const { data } = app.locals;
+  const { userID, outfitID } = req.params;
+  const user = data.find(user => user.userID === userID)
+  const outfitData = user.outfits.find(outfit => outfitID === outfit.id)
+
+  const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfitID)
+  const outfitPieces = foundOTP.reduce((arr, piece) => {
+    const foundPieces = user.pieces.find(item => item.id === piece.pieceID)
+      arr.push(foundPieces)
+    return arr
+  },[])
+ 
+  res.status(200).json({outfitData, outfitPieces});
+});
+
+// send back this info based on ID of outfit and userID to the FE:
+// {
+//   outfitID: "OUT-klafj",
+//   fullOutfitImage: "",
+//   notes: "",
+//   pieces: [
+//     {
+//       id: "PIE-",
+//       etc,
+//     }
+//   ]
+// }
 
 
 app.post('/api/v1/data/closet', (req, res) => {
@@ -106,7 +146,7 @@ app.post('/api/v1/data/user', (req, res) => {
   if(credentialsFound.length > 0) {
     res.status(201).json({credentialsFound});
   } else {
-    res.status(422).json({message: 'Username or Password incorrect'})
+    res.status(422).json({message: 'Error: Incorrect username or password!'})
   }
 })
 
@@ -155,9 +195,9 @@ app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
   })
 })
 
-app.patch('/api/v1/data/outfit/:outfitID/:userID', (req,res) => {
+app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
   const { outfitID, userID } = req.params;
-  const { fullOutfitImage } = req.body
+  const { fullOutfitImage, notes } = req.body
   const { data } = app.locals;
 
   if(!outfitExists(outfitID, userID)) {
@@ -169,6 +209,7 @@ app.patch('/api/v1/data/outfit/:outfitID/:userID', (req,res) => {
   const user = data.find(user => user.userID === userID)
   const foundOutfit = user.outfits.find(outfit => outfit.id === outfitID)
   foundOutfit.fullOutfitImage = fullOutfitImage
+  foundOutfit.notes = notes
 
   res.status(201).json({
     message: 'Success! Full outfit image updated.', 
@@ -200,22 +241,6 @@ app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
     newData: data[0].outfitToPieces.filter(combo => combo.outfitID === outfitID)
   })
 })
-
-// app.delete('/api/v1/data/:id', (req, res) => {
-//   const  { id } = req.params;
-//   const { data } = app.locals;
-
-//   const filteredIdeas = ideas.filter(idea => {
-//     return idea.id !== parseInt(id)
-//   })
-
-//   app.locals.ideas = filteredIdeas
-
-//   res.status(200).json({
-//     message: `Idea #${id} has deleted`,
-//     ideas: filteredIdeas
-//   })
-// })
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
