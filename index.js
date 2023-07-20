@@ -58,7 +58,7 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
   const { data } = app.locals;
   const { userID, outfitID } = req.params;
   const user = data.find(user => user.userID === userID)
-  const outfitData = user.outfits
+  const outfitData = user.outfits.find(outfit => outfitID === outfit.id)
 
   const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfitID)
   const outfitPieces = foundOTP.reduce((arr, piece) => {
