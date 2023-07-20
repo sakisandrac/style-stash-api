@@ -33,10 +33,31 @@ app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   const { data } = app.locals;
   const { category, userID }  = req.params;
   const closetData = data.filter(user => user.userID === userID )
+  console.log(closetData)
   const filteredPieces = closetData[0].pieces.filter(piece => piece.categoryID === `CAT-${category}`)
 
   res.status(200).json({ filteredPieces })
 });
+
+app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
+  const {userID, pieceID} = req.params;
+  const {notes} = req.body;
+  const piece = pieceExists(pieceID, userID)
+
+  if(!piece) {
+    return res.status(404).json({
+      message: 'Error: Piece not found!'
+    })
+  }
+
+  piece.notes = notes 
+
+  res.status(201).json({
+    message: `Success! Piece # ${pieceID} edited!`,
+    newData: piece
+  })
+  
+})
 
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { data } = app.locals;
