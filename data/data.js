@@ -34,7 +34,7 @@ module.exports = [
         notes: ""
       },
       {
-        id: "PIE-bag-ex-1",
+        id: "PIE-bags-ex-1",
         image: "https://i.imgur.com/tjrHoPs.jpg",
         categoryID: "CAT-bags",
         notes: ""
@@ -81,8 +81,8 @@ module.exports = [
       {id: "OTP-otp-ex-9", outfitID: "OUT-outfit-ex-2", pieceID: 'PIE-bags-ex-1'},
     ],
     outfits: [
-      {id: "OUT-outfit-ex-1", fullOutfitImage: "./outfit.JPG"},
-      {id: "OUT-outfit-ex-2", fullOutfitImage: "./outfit2.png"}
+      {id: "OUT-outfit-ex-1", fullOutfitImage: "https://i.imgur.com/0CPqUal.png", notes: ""},
+      {id: "OUT-outfit-ex-2", fullOutfitImage: "https://i.imgur.com/EqL59lG.jpg", notes: ""}
     ]
   }
 ]
