@@ -4,24 +4,24 @@ const cors = require('cors');
 const port = process.env.PORT || 3003;
 const app = express();
 const data = require('./data/data');
+app.locals = { title: 'Data', data}
+
+//MIDDLEWARE
+app.use(cors());
+app.use(express.json());
+
+//HELPER FUNCTIONS / VARIABLES
 const checkID = (type) => {
   return (itemID, userID) => {
     const user = data.find(user => user.userID === userID)
     return user[type].find(item => item.id === itemID)
   }
 }
-
 const outfitExists = checkID('outfits')
 const pieceExists = checkID('pieces')
 
-app.locals = {
-  title: 'Data',
-  data,
-}
 
-app.use(cors());
-app.use(express.json());
-
+// GET ENDPOINTS
 app.get('/api/v1/data/closet/', (req, res) => {
   const { data } = app.locals;
   const closetData = data[0].pieces;
@@ -39,33 +39,11 @@ app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   res.status(200).json({ filteredPieces })
 });
 
-app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
-  const {userID, pieceID} = req.params;
-  const {notes} = req.body;
-  const piece = pieceExists(pieceID, userID)
-
-  if(!piece) {
-    return res.status(404).json({
-      message: 'Error: Piece not found!'
-    })
-  }
-
-  piece.notes = notes 
-
-  res.status(201).json({
-    message: `Success! Piece # ${pieceID} edited!`,
-    newData: piece
-  })
-  
-})
-
-
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { data } = app.locals;
   const { userID } = req.params;
   const user = data.find(user => user.userID === userID)
   const outfitData = user.outfits
-  // console.log(outfitData)
   const allData = outfitData.map(outfit => {
     const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfit.id)
     const outfitPieces = foundOTP.reduce((arr, piece) => {
@@ -95,20 +73,7 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
   res.status(200).json({outfitData, outfitPieces});
 });
 
-// send back this info based on ID of outfit and userID to the FE:
-// {
-//   outfitID: "OUT-klafj",
-//   fullOutfitImage: "",
-//   notes: "",
-//   pieces: [
-//     {
-//       id: "PIE-",
-//       etc,
-//     }
-//   ]
-// }
-
-
+// POST ENDPOINTS
 app.post('/api/v1/data/closet', (req, res) => {
   const { image, categoryID, id, notes } = req.body;
   const requiredProperties = ['image', 'categoryID', 'id'];
@@ -195,6 +160,27 @@ app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
   })
 })
 
+//PATCH ENDPOINTS
+app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
+  const {userID, pieceID} = req.params;
+  const {notes} = req.body;
+  const piece = pieceExists(pieceID, userID)
+
+  if(!piece) {
+    return res.status(404).json({
+      message: 'Error: Piece not found!'
+    })
+  }
+
+  piece.notes = notes 
+
+  res.status(201).json({
+    message: `Success! Piece # ${pieceID} edited!`,
+    newData: piece
+  })
+  
+})
+
 app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
   const { outfitID, userID } = req.params;
   const { fullOutfitImage, notes } = req.body
@@ -217,6 +203,8 @@ app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
   })
 
 })
+
+//DELETE ENDPOINTS
 
 app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
   const {userID} = req.params
