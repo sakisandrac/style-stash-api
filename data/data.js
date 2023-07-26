@@ -285,7 +285,6 @@ module.exports = [
         categoryID: "CAT-shoes",
         notes: ""
       },
-      
     ],
     categories: [
       {id: 'CAT-pants', name: 'Pants'},
@@ -308,10 +307,32 @@ module.exports = [
       {id: "OTP-otp-ex-7", outfitID: "OUT-outfit-ex-2", pieceID: 'PIE-outerwear-ex-1'},
       {id: "OTP-otp-ex-8", outfitID: "OUT-outfit-ex-2", pieceID: 'PIE-shoes-ex-1'},
       {id: "OTP-otp-ex-9", outfitID: "OUT-outfit-ex-2", pieceID: 'PIE-bags-ex-1'},
+      {id: "OTP-otp-ex-10", outfitID: "OUT-outfit-ex-3", pieceID: 'PIE-shoes-ex-8'},
+      {id: "OTP-otp-ex-11", outfitID: "OUT-outfit-ex-3", pieceID: 'PIE-bags-ex-3'},
+      {id: "OTP-otp-ex-12", outfitID: "OUT-outfit-ex-3", pieceID: 'PIE-op-ex-10'},
+      {id: "OTP-otp-ex-13", outfitID: "OUT-outfit-ex-3", pieceID: 'PIE-out-ex-1'},
+      {id: "OTP-otp-ex-14", outfitID: "OUT-outfit-ex-4", pieceID: 'PIE-op-ex-6'},
+      {id: "OTP-otp-ex-15", outfitID: "OUT-outfit-ex-4", pieceID: 'PIE-pants-ex-6'},
+      {id: "OTP-otp-ex-16", outfitID: "OUT-outfit-ex-4", pieceID: 'PIE-shoes-ex-3'},
+      {id: "OTP-otp-ex-17", outfitID: "OUT-outfit-ex-4", pieceID: 'PIE-tops-ex-9'},
+      {id: "OTP-otp-ex-18", outfitID: "OUT-outfit-ex-5", pieceID: 'PIE-tops-ex-6'},
+      {id: "OTP-otp-ex-19", outfitID: "OUT-outfit-ex-5", pieceID: 'PIE-skirts-ex-6'},
+      {id: "OTP-otp-ex-20", outfitID: "OUT-outfit-ex-5", pieceID: 'PIE-acc-ex-2'},
+      {id: "OTP-otp-ex-21", outfitID: "OUT-outfit-ex-5", pieceID: 'PIE-op-ex-2'},
+      {id: "OTP-otp-ex-22", outfitID: "OUT-outfit-ex-5", pieceID: 'PIE-bags-ex-1'},
+
+      {id: "OTP-otp-ex-23", outfitID: "OUT-outfit-ex-6", pieceID: 'PIE-shoes-ex-8'},
+      {id: "OTP-otp-ex-24", outfitID: "OUT-outfit-ex-6", pieceID: 'PIE-bags-ex-6'},
+      {id: "OTP-otp-ex-25", outfitID: "OUT-outfit-ex-6", pieceID: 'PIE-tops-ex-9'},
+      {id: "OTP-otp-ex-26", outfitID: "OUT-outfit-ex-6", pieceID: 'PIE-acc-ex-6'},
     ],
     outfits: [
       {id: "OUT-outfit-ex-1", fullOutfitImage: "https://i.imgur.com/0CPqUal.png", notes: ""},
-      {id: "OUT-outfit-ex-2", fullOutfitImage: "https://i.imgur.com/EqL59lG.jpg", notes: ""}
+      {id: "OUT-outfit-ex-2", fullOutfitImage: "https://i.imgur.com/EqL59lG.jpg", notes: ""},
+      {id: "OUT-outfit-ex-3", fullOutfitImage: "https://i.imgur.com/Ndq51uq.jpg", notes: ""},
+      {id: "OUT-outfit-ex-4", fullOutfitImage: "https://i.imgur.com/2ZBY3ix.jpg", notes: ""},
+      {id: "OUT-outfit-ex-5", fullOutfitImage: "https://i.imgur.com/UxIRW1c.jpg", notes: ""},
+      {id: "OUT-outfit-ex-6", fullOutfitImage: "", notes: ""}
     ]
   }
 ]
