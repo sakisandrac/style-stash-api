@@ -19,7 +19,9 @@ const checkID = (type) => {
 }
 const outfitExists = checkID('outfits')
 const pieceExists = checkID('pieces')
-
+const user = (userID) => {
+  return data.find(user => user.userID === userID)
+}
 
 // GET ENDPOINTS
 app.get('/api/v1/data/closet/', (req, res) => {
@@ -30,24 +32,18 @@ app.get('/api/v1/data/closet/', (req, res) => {
 });
 
 app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
-  const { data } = app.locals;
   const { category, userID }  = req.params;
-  const closetData = data.filter(user => user.userID === userID )
-  console.log(closetData)
-  const filteredPieces = closetData[0].pieces.filter(piece => piece.categoryID === `CAT-${category}`)
-
+  const filteredPieces = user(userID).pieces.filter(piece => piece.categoryID === `CAT-${category}`)
   res.status(200).json({ filteredPieces })
 });
 
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
-  const { data } = app.locals;
   const { userID } = req.params;
-  const user = data.find(user => user.userID === userID)
-  const outfitData = user.outfits
+  const outfitData = user(userID).outfits
   const allData = outfitData.map(outfit => {
-    const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfit.id)
+    const foundOTP = user(userID).outfitToPieces.filter(piece => piece.outfitID === outfit.id)
     const outfitPieces = foundOTP.reduce((arr, piece) => {
-      const foundPieces = user.pieces.find(item => item.id === piece.pieceID)
+      const foundPieces = user(userID).pieces.find(item => item.id === piece.pieceID)
         arr.push(foundPieces)
       return arr
     },[])
@@ -58,14 +54,12 @@ app.get('/api/v1/data/outfits/:userID', (req, res) => {
 });
 
 app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
-  const { data } = app.locals;
   const { userID, outfitID } = req.params;
-  const user = data.find(user => user.userID === userID)
-  const outfitData = user.outfits.find(outfit => outfitID === outfit.id)
+  const outfitData = user(userID).outfits.find(outfit => outfitID === outfit.id)
 
-  const foundOTP = user.outfitToPieces.filter(piece => piece.outfitID === outfitID)
+  const foundOTP = user(userID).outfitToPieces.filter(piece => piece.outfitID === outfitID)
   const outfitPieces = foundOTP.reduce((arr, piece) => {
-    const foundPieces = user.pieces.find(item => item.id === piece.pieceID)
+    const foundPieces = user(userID).pieces.find(item => item.id === piece.pieceID)
       arr.push(foundPieces)
     return arr
   },[])
@@ -74,8 +68,8 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
 });
 
 // POST ENDPOINTS
-app.post('/api/v1/data/closet', (req, res) => {
-  const { image, categoryID, id, notes } = req.body;
+app.post('/api/v1/data/closet/', (req, res) => {
+  const { image, categoryID, id, notes, userID } = req.body;
   const requiredProperties = ['image', 'categoryID', 'id'];
 
   for (let requiredParameter of requiredProperties) {
@@ -86,8 +80,8 @@ app.post('/api/v1/data/closet', (req, res) => {
     }
   }
 
-  if (!app.locals.data[0].pieces.some(piece => piece.id === id)) {
-    app.locals.data[0].pieces.push({ id, image, categoryID, notes })
+  if (!user(userID).pieces.some(piece => piece.id === id)) {
+    user(userID).pieces.push({ id, image, categoryID, notes })
     res.status(201).json({
       message: `${id} Item added!`,
       newData: {
