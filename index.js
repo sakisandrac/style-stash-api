@@ -40,6 +40,7 @@ app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { userID } = req.params;
   const outfitData = user(userID).outfits
+  
   const allData = outfitData.map(outfit => {
     const foundOTP = user(userID).outfitToPieces.filter(piece => piece.outfitID === outfit.id)
     const outfitPieces = foundOTP.reduce((arr, piece) => {
@@ -112,16 +113,9 @@ app.post('/api/v1/data/user', (req, res) => {
 app.post('/api/v1/data/outfits/:userID', (req, res) => {
   const {userID} = req.params
   const {id, fullOutfitImage, notes} = req.body
-  const {data} = app.locals
 
-  if(outfitExists(id, userID)) {
-    res.status(400).json({
-      message: `Error: Outfit already exists!`
-    })
-  }
-  const user = data.find(user => user.userID === userID)
-  user.outfits.push({id, fullOutfitImage, notes})
-  
+  user(userID).outfits.push({id, fullOutfitImage, notes})
+
   res.status(201).json({
     message: `${id} Outfit added!`,
     newData: {id, fullOutfitImage, notes}
@@ -132,7 +126,6 @@ app.post('/api/v1/data/outfits/:userID', (req, res) => {
 app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
   const {userID} = req.params
   const {outfitID, pieceID} = req.body
-  const {data} = app.locals
   const otpID = uuidv4()
 
   if(!pieceExists(pieceID, userID)) {
@@ -146,8 +139,8 @@ app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
       message: 'Error: Outfit not found!'
     })
   }
-  const user = data.find(user => user.userID === userID)
-  user.outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
+
+  user(userID).outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
   res.status(201).json({
     message: `OTP-${otpID} Outfit to piece relationship added!`,
     newData: {id:`OTP-${otpID}`, outfitID, pieceID}
@@ -178,7 +171,6 @@ app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
 app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
   const { outfitID, userID } = req.params;
   const { fullOutfitImage, notes } = req.body
-  const { data } = app.locals;
 
   if(!outfitExists(outfitID, userID)) {
     res.status(404).json({
@@ -186,8 +178,7 @@ app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
     })
   }
 
-  const user = data.find(user => user.userID === userID)
-  const foundOutfit = user.outfits.find(outfit => outfit.id === outfitID)
+  const foundOutfit = user(userID).outfits.find(outfit => outfit.id === outfitID)
   foundOutfit.fullOutfitImage = fullOutfitImage
   foundOutfit.notes = notes
 
@@ -203,11 +194,12 @@ app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
 app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
   const {userID} = req.params
   const {outfitID, pieceID} = req.body
-  const {data} = app.locals
 
-  const foundOutfitToPiece = data[0].outfitToPieces.find(combo => 
+  const foundOutfitToPiece = user(userID).outfitToPieces.find(combo => 
     combo.outfitID === outfitID && combo.pieceID === pieceID
   )
+
+  user(userID).outfitToPieces.splice(user(userID).outfitToPieces.indexOf(foundOutfitToPiece), 1)
 
   if(!foundOutfitToPiece) {
     res.status(404).json({
@@ -215,33 +207,29 @@ app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
     })
   }
 
-  const user = data.find(user => user.userID === userID)
-  user.outfitToPieces.splice(data[0].outfitToPieces.indexOf(foundOutfitToPiece), 1)
-
   res.status(201).json({
     message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
-    newData: data[0].outfitToPieces.filter(combo => combo.outfitID === outfitID)
+    newData: user(userID).outfitToPieces.filter(combo => combo.outfitID === outfitID)
   })
 })
 
 app.delete('/api/v1/data/outfits/:userID', (req, res) => {
   const {userID} = req.params
   const {id } = req.body
-  const {data} = app.locals
+
   if(!outfitExists(id, userID)) {
     res.status(400).json({
       message: `Error: Outfit Not Found!`
     })
   }
 
-  const user = data.find(user => user.userID === userID)
-  const foundOutfit = user.outfits.find(outfit => outfit.id === id)
-  user.outfits.splice(user.outfits.indexOf(foundOutfit), 1)
+  const foundOutfit = user(userID).outfits.find(outfit => outfit.id === id)
+  user(userID).outfits.splice(user(userID).outfits.indexOf(foundOutfit), 1)
   
   res.status(201).json({
     message: `${id} Outfit deleted!`
   })
-  
+
 })
 
 app.listen(port, () => {
