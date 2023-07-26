@@ -56,7 +56,236 @@ module.exports = [
         image: "https://i.imgur.com/eSO0N4s.jpg",
         categoryID: "CAT-miscellaneous",
         notes: ""
-      }
+      },
+      {
+        id: "PIE-pants-ex-2",
+        image: "https://i.imgur.com/k9MlDi0.jpg",
+        categoryID: "CAT-pants",
+        notes: ""
+      },
+      {
+        id: "PIE-onepiece-ex-2",
+        image: "https://i.imgur.com/xRVD81w.jpg",
+        categoryID: "CAT-onepieces",
+        notes: ""
+      },
+      {
+        id: "PIE-skirts-ex-2",
+        image: "https://i.imgur.com/afty7SC.jpg",
+        categoryID: "CAT-skirts",
+        notes: ""
+      },
+      {
+        id: "PIE-outer-ex-2",
+        image: "https://i.imgur.com/4lLSFHj.jpg",
+        categoryID: "CAT-outerwear",
+        notes: ""
+      },
+      {
+        id: "PIE-misc-ex-2",
+        image: "https://i.imgur.com/LV1XMvW.jpg",
+        categoryID: "CAT-miscellaneous",
+        notes: ""
+      },
+      {
+        id: "PIE-skirts-ex-3",
+        image: "https://i.imgur.com/2qdfAHB.jpg",
+        categoryID: "CAT-skirts",
+        notes: ""
+      },
+      {
+        id: "PIE-skirts-ex-4",
+        image: "https://i.imgur.com/DNzhbMo.jpg",
+        categoryID: "CAT-skirts",
+        notes: ""
+      },
+      {
+        id: "PIE-acc-1",
+        image: "https://i.imgur.com/WqSfEuv.jpg",
+        categoryID: "CAT-accessories",
+        notes: ""
+      },
+      {
+        id: "PIE-acc-ex-2",
+        image: "https://i.imgur.com/1xioIok.jpg",
+        categoryID: "CAT-accessories",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-2",
+        image: "https://i.imgur.com/3bibQio.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-misc-ex-3",
+        image: "https://i.imgur.com/DytDk1P.jpg",
+        categoryID: "CAT-miscellaneous",
+        notes: ""
+      },
+      {
+        id: "PIE-skirts-ex-6",
+        image: "https://i.imgur.com/MHtx98h.jpg",
+        categoryID: "CAT-skirts",
+        notes: ""
+      },
+      {
+        id: "PIE-acc-ex-5",
+        image: "https://i.imgur.com/f2wfHGn.jpg",
+        categoryID: "CAT-acessories",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-4",
+        image: "https://i.imgur.com/9PpAK5C.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-bags-ex-2",
+        image: "https://i.imgur.com/tMJU4uN.jpg",
+        categoryID: "CAT-bags",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-4",
+        image: "https://i.imgur.com/9PpAK5C.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-acc-ex-5",
+        image: "https://i.imgur.com/BivYLq5.jpg",
+        categoryID: "CAT-accessories",
+        notes: ""
+      },
+      {
+        id: "PIE-acc-ex-6",
+        image: "https://i.imgur.com/VEKXycp.jpg",
+        categoryID: "CAT-accessories",
+        notes: ""
+      },
+      {
+        id: "PIE-op-ex-1",
+        image: "https://i.imgur.com/mCy2fZz.jpg",
+        categoryID: "CAT-onepieces",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-6",
+        image: "https://i.imgur.com/b0SS1PJ.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-pants-ex-3",
+        image: "https://i.imgur.com/RTmJKzc.jpg",
+        categoryID: "CAT-pants",
+        notes: ""
+      },
+      {
+        id: "PIE-op-ex-2",
+        image: "https://i.imgur.com/5TRRL59.jpg",
+        categoryID: "CAT-onepieces",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-7",
+        image: "https://i.imgur.com/Y9udUcP.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-8",
+        image: "https://i.imgur.com/eXWOKl0.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-pants-ex-5",
+        image: "https://i.imgur.com/kKo6Dep.jpg",
+        categoryID: "CAT-pants",
+        notes: ""
+      },
+      {
+        id: "PIE-skirts-ex-7",
+        image: "https://i.imgur.com/uOCnlfF.jpg",
+        categoryID: "CAT-skirts",
+        notes: ""
+      },
+      {
+        id: "PIE-out-ex-1",
+        image: "https://i.imgur.com/ceEJTP4.jpg",
+        categoryID: "CAT-outerwear",
+        notes: ""
+      },
+      {
+        id: "PIE-tops-ex-9",
+        image: "https://i.imgur.com/faIHUd2.jpg",
+        categoryID: "CAT-tops",
+        notes: ""
+      },
+      {
+        id: "PIE-outerwear-ex-4",
+        image: "https://i.imgur.com/RprUrJA.jpg",
+        categoryID: "CAT-outerwear",
+        notes: ""
+      },
+      {
+        id: "PIE-pants-ex-6",
+        image: "https://i.imgur.com/m9yTDR9.jpg",
+        categoryID: "CAT-pants",
+        notes: ""
+      },
+      {
+        id: "PIE-op-ex-6",
+        image: "https://i.imgur.com/HHMSiPo.jpg",
+        categoryID: "CAT-onepieces",
+        notes: ""
+      },
+      {
+        id: "PIE-op-ex-10",
+        image: "https://i.imgur.com/VxNpHE3.jpg",
+        categoryID: "CAT-onepieces",
+        notes: ""
+      },
+      {
+        id: "PIE-shoes-ex-3",
+        image: "https://i.imgur.com/aZd8LVZ.jpg",
+        categoryID: "CAT-shoes",
+        notes: ""
+      },
+      {
+        id: "PIE-bags-ex-3",
+        image: "https://i.imgur.com/hYuBpK2.jpg",
+        categoryID: "CAT-bags",
+        notes: "Bottega Venetta"
+      },
+      {
+        id: "PIE-shoes-ex-6",
+        image: "https://i.imgur.com/bVxQCOK.jpg",
+        categoryID: "CAT-shoes",
+        notes: ""
+      },
+      {
+        id: "PIE-shoes-ex-7",
+        image: "https://i.imgur.com/tqPpgRq.jpg",
+        categoryID: "CAT-shoes",
+        notes: ""
+      },
+      {
+        id: "PIE-bags-ex-6",
+        image: "https://i.imgur.com/7FSXbCC.jpg",
+        categoryID: "CAT-bags",
+        notes: ""
+      },
+      {
+        id: "PIE-shoes-ex-8",
+        image: "https://i.imgur.com/0iZhrDU.jpg",
+        categoryID: "CAT-shoes",
+        notes: ""
+      },
+      
     ],
     categories: [
       {id: 'CAT-pants', name: 'Pants'},
