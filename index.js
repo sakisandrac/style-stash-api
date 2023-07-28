@@ -37,6 +37,13 @@ app.get('/api/v1/data/closet/:userID/:category', (req, res) => {
   res.status(200).json({ filteredPieces })
 });
 
+app.get('/api/v1/data/closet/:userID/', (req, res) => {
+  const { userID }  = req.params;
+  const pieces = user(userID).pieces
+  res.status(200).json({ pieces })
+});
+
+
 app.get('/api/v1/data/outfits/:userID', (req, res) => {
   const { userID } = req.params;
   const outfitData = user(userID).outfits
