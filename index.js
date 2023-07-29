@@ -254,7 +254,24 @@ app.delete('/api/v1/data/outfits/:userID', (req, res) => {
 
 })
 
+app.delete('/api/v1/data/piece/:userID', (req, res) => {
+  const {userID} = req.params;
+  const {id} = req.body;
 
+  if(!pieceExists(id, userID)) {
+    res.status(400).json({
+      message: `Error: Piece Not Found!`
+    })
+  }
+
+  const foundPiece = user(userID).pieces.find(piece => piece.id === id)
+  user(userID).pieces.splice(user(userID).outfits.indexOf(foundPiece), 1)
+
+  res.status(201).json({
+    message: `${id} Piece deleted!`
+  })
+
+})
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
