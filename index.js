@@ -75,6 +75,22 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
   res.status(200).json({outfitData, outfitPieces});
 });
 
+app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', (req, res) => {
+  const {userID, pieceID} = req.params;
+
+  if(!pieceExists(pieceID, userID)) {
+    return res.status(404).json({
+      message: 'Error: Piece not found!'
+    })
+  }
+
+  const allOTPs = user(userID).outfitToPieces.filter(otp => otp.pieceID === pieceID)
+
+  res.status(201).json({
+    data: allOTPs
+  })
+})
+
 // POST ENDPOINTS
 app.post('/api/v1/data/closet/', (req, res) => {
   const { image, categoryID, id, notes, userID } = req.body;
@@ -122,7 +138,6 @@ app.post('/api/v1/data/outfits/:userID', (req, res) => {
   const {id, fullOutfitImage, notes} = req.body
 
   user(userID).outfits.push({id, fullOutfitImage, notes})
-
   res.status(201).json({
     message: `${id} Outfit added!`,
     newData: {id, fullOutfitImage, notes}
@@ -238,6 +253,8 @@ app.delete('/api/v1/data/outfits/:userID', (req, res) => {
   })
 
 })
+
+
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
