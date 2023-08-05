@@ -20,4 +20,4 @@ Clone this down, and `cd` into it.  Then run:
 |Update piece| `http://localhost:3003/api/v1/data/closet/:userID/:pieceID`|PATCH| `{notes: <string>}` |`{message: `Success! Piece # ${pieceID} edited!`, newData: piece}`|
 |Update outfit| `http://localhost:3003/api/v1/data/outfit/:userID/:outfitID`|PATCH| `{ fullOutfitImage: <string>, notes: <string> }` |`{message: 'Success! Full outfit image updated,newData: {outfitID, fullOutfitImage}}`|
 |Delete single piece| `http://localhost:3003/api/v1/data/outfit-to-pieces/:userID`| DELETE |`{outfitID: <string>, pieceID: <string>}` | `{message: `Success! Piece {pieceID} removed from outfit {outfitID}`, newData}` |
-|Delete outfir| `http://localhost:3003/api/v1/data/outfit-to-pieces/:userID`| DELETE |`{id: <string> }` | `{message: `${id} Outfit deleted!`}`|
+|Delete outfit| `http://localhost:3003/api/v1/data/outfit-to-pieces/:userID`| DELETE |`{id: <string> }` | `{message: `${id} Outfit deleted!`}`|
