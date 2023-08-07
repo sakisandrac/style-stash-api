@@ -140,13 +140,7 @@ app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
       message: 'Error: Piece not found!'
     })
   }
-
-  if(!outfitExists(outfitID, userID)) {
-    res.status(404).json({
-      message: 'Error: Outfit not found!'
-    })
-  }
-
+  
   user(userID).outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
   res.status(201).json({
     message: `OTP-${otpID} Outfit to piece relationship added!`,
