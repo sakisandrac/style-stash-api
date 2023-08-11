@@ -607,12 +607,12 @@ const outfitToPieces = [
   {id: "OTP-otp-lg-15", outfit_id: "OUT-outfit-lg-4", piece_id: 'PIE-acc-lg4'},
   {id: "OTP-otp-lg-16", outfit_id: "OUT-outfit-lg-4", piece_id: 'PIE-acc-lg1'},
   {id: "OTP-otp-lg-17", outfit_id: "OUT-outfit-lg-5", piece_id: 'PIE-tops-lg1'},
-  {id: "OTP-otp-lg-17", outfit_id: "OUT-outfit-lg-5", piece_id: 'PIE-pants-lg2'},
-  {id: "OTP-otp-lg-18", outfit_id: "OUT-outfit-lg-6", piece_id: 'PIE-onepiece-lg3'},
-  {id: "OTP-otp-lg-19", outfit_id: "OUT-outfit-lg-6", piece_id: 'PIE-shoe-lg3'},
-  {id: "OTP-otp-lg-20", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-onepiece-lg2'},
-  {id: "OTP-otp-lg-21", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-misc-lg0'},
-  {id: "OTP-otp-lg-22", outfit_id: "OUT-outfit-lg-8", piece_id: 'PIE-acc-lg0'},
-  {id: "OTP-otp-lg-23", outfit_id: "OUT-outfit-lg-8", piece_id: 'PIE-shoe-lg2'},
+  {id: "OTP-otp-lg-18", outfit_id: "OUT-outfit-lg-5", piece_id: 'PIE-pants-lg2'},
+  {id: "OTP-otp-lg-19", outfit_id: "OUT-outfit-lg-6", piece_id: 'PIE-onepiece-lg3'},
+  {id: "OTP-otp-lg-20", outfit_id: "OUT-outfit-lg-6", piece_id: 'PIE-shoe-lg3'},
+  {id: "OTP-otp-lg-21", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-onepiece-lg2'},
+  {id: "OTP-otp-lg-22", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-misc-lg0'},
+  {id: "OTP-otp-lg-23", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-acc-lg0'},
+  {id: "OTP-otp-lg-24", outfit_id: "OUT-outfit-lg-7", piece_id: 'PIE-shoe-lg2'},
 ]
-module.exports = {users, pieces, outfits}
+module.exports = {users, pieces, outfits, outfitToPieces}
