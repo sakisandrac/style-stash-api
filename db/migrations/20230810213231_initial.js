@@ -21,7 +21,6 @@ exports.up = function(knex) {
       table.foreign('user_id')
         .references('user.id');
       table.string('category_id')
-
       table.timestamps(true, true);
     })
 
@@ -32,7 +31,6 @@ exports.up = function(knex) {
       table.string('user_id')
       table.foreign('user_id')
         .references('user.id');
-
       table.timestamps(true, true);
     })
 
@@ -44,7 +42,6 @@ exports.up = function(knex) {
       table.string('outfit_id')
       table.foreign('outfit_id')
         .references('outfit.id');
-
       table.timestamps(true, true);
     })
 
