@@ -127,20 +127,20 @@ app.get('/api/v1/data/outfits/:userID', async(req, res) => {
 //   }
 // })
 
-// app.post('/api/v1/data/user', (req, res) => {
-//   const { data } = app.locals;
-//   const { username, password } = req.body;
+app.post('/api/v1/data/user', async (req, res) => {
+  const { username, password } = req.body;
 
-//   const credentialsFound = data.filter(user => {
-//     return user.credentials.username === username && user.credentials.password === password
-//   })
-  
-//   if(credentialsFound.length > 0) {
-//     res.status(201).json({credentialsFound});
-//   } else {
-//     res.status(422).json({message: 'Error: Incorrect username or password!'})
-//   }
-// })
+  try {
+    const credentialsFound = await database('user').select().where('username', username).where('password', password)
+    if(credentialsFound.length) {
+      res.status(201).json({credentialsFound});
+    } else {
+      res.status(422).json({message: 'Error: Incorrect username or password!'})
+    }
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 // app.post('/api/v1/data/outfits/:userID', (req, res) => {
 //   const {userID} = req.params
