@@ -155,15 +155,8 @@ app.post('/api/v1/data/user', async (req, res) => {
 // })
 
 app.post('/api/v1/data/outfit-to-pieces', async (req, res) => {
-  const {userID} = req.params
   const {outfitID, pieceID} = req.body
   const otpID = uuidv4()
-
-  // if(!pieceExists(pieceID, userID)) {
-  //   return res.status(404).json({
-  //     message: 'Error: Piece not found!'
-  //   })
-  // }
   try {
     const newOtp = await database('outfit_to_piece').insert({ id: `OTP-${otpID}`, outfit_id: outfitID, piece_id: pieceID }).returning('*')
     res.status(201).json({
@@ -173,11 +166,6 @@ app.post('/api/v1/data/outfit-to-pieces', async (req, res) => {
   } catch (error) {
     res.status(500).json({error})
   }
-  // user(userID).outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
-  // res.status(201).json({
-  //   message: `OTP-${otpID} Outfit to piece relationship added!`,
-  //   newData: {id:`OTP-${otpID}`, outfitID, pieceID}
-  // })
 })
 
 // //PATCH ENDPOINTS
@@ -201,26 +189,20 @@ app.post('/api/v1/data/outfit-to-pieces', async (req, res) => {
   
 // })
 
-// app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
-//   const { outfitID, userID } = req.params;
-//   const { fullOutfitImage, notes } = req.body
+app.patch('/api/v1/data/outfit/:userID/:outfitID', async(req,res) => {
+  const { outfitID, userID } = req.params;
+  const { fullOutfitImage, notes } = req.body
 
-//   if(!outfitExists(outfitID, userID)) {
-//     res.status(404).json({
-//       message: 'Error: Outfit not found!'
-//     })
-//   }
-
-//   const foundOutfit = user(userID).outfits.find(outfit => outfit.id === outfitID)
-//   foundOutfit.fullOutfitImage = fullOutfitImage
-//   foundOutfit.notes = notes
-
-//   res.status(201).json({
-//     message: 'Success! Full outfit image updated.', 
-//     newData: {outfitID, fullOutfitImage}
-//   })
-
-// })
+  try {
+    const patchedOutfit = await database('outfit').where('user_id', userID).where('id', outfitID).update({image: fullOutfitImage, note: notes}, ['image', 'note'])
+    res.status(201).json({
+      message: 'Success! Full outfit image and notes updated.', 
+      newData: { outfitID: outfitID, fullOutfitImage: patchedOutfit[0].image, notes: patchedOutfit[0].note}
+    })
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 // //DELETE ENDPOINTS
 
