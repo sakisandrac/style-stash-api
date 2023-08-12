@@ -70,19 +70,18 @@ app.get('/api/v1/data/outfits/:userID', async(req, res) => {
   
 });
 
-// app.get('/api/v1/data/outfits/:userID/:outfitID', (req, res) => {
-//   const { userID, outfitID } = req.params;
-//   const outfitData = user(userID).outfits.find(outfit => outfitID === outfit.id)
+app.get('/api/v1/data/outfits/:userID/:outfitID', async(req, res) => {
+  const { userID, outfitID } = req.params;
+  try {
+    const outfitData = await database('outfit').select().where('user_id', userID).where('id', outfitID)
 
-//   const foundOTP = user(userID).outfitToPieces.filter(piece => piece.outfitID === outfitID)
-//   const outfitPieces = foundOTP.reduce((arr, piece) => {
-//     const foundPieces = user(userID).pieces.find(item => item.id === piece.pieceID)
-//       arr.push(foundPieces)
-//     return arr
-//   },[])
- 
-//   res.status(200).json({outfitData, outfitPieces});
-// });
+    const otps = await Promise.all(outfitData.map(async(outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
+
+    res.status(200).json({"outfitData": outfitData[0], "outfitToPieces": otps[0]});
+  } catch (error) {
+    res.status(500).json({error})
+  }
+});
 
 // app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', (req, res) => {
 //   const {userID, pieceID} = req.params;
