@@ -15,7 +15,7 @@ exports.up = function(knex) {
 
     .createTable('piece', function (table) {
       table.string('id').primary();
-      table.string('note');
+      table.text('note');
       table.string('image');
       table.string('user_id')
       table.foreign('user_id')
@@ -26,7 +26,7 @@ exports.up = function(knex) {
 
     .createTable('outfit', function (table) {
       table.string('id').primary();
-      table.string('note');
+      table.text('note');
       table.string('image');
       table.string('user_id')
       table.foreign('user_id')
