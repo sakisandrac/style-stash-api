@@ -83,21 +83,17 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', async(req, res) => {
   }
 });
 
-// app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', (req, res) => {
-//   const {userID, pieceID} = req.params;
-
-//   if(!pieceExists(pieceID, userID)) {
-//     return res.status(404).json({
-//       message: 'Error: Piece not found!'
-//     })
-//   }
-
-//   const allOTPs = user(userID).outfitToPieces.filter(otp => otp.pieceID === pieceID)
-
-//   res.status(201).json({
-//     data: allOTPs
-//   })
-// })
+app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', async(req, res) => {
+  const {pieceID} = req.params;
+try {
+  const otps = await database('outfit_to_piece').select().where('piece_id', pieceID)
+  res.status(201).json({
+    data: otps
+  })
+} catch (error) {
+  res.status(500).json({error})
+}
+})
 
 // // POST ENDPOINTS
 // app.post('/api/v1/data/closet/', (req, res) => {
