@@ -247,24 +247,19 @@ app.patch('/api/v1/data/outfit/:userID/:outfitID', async(req,res) => {
 
 // })
 
-// app.delete('/api/v1/data/piece/:userID', (req, res) => {
-//   const {userID} = req.params;
-//   const {id} = req.body;
+app.delete('/api/v1/data/piece/:userID', async (req, res) => {
+  const {userID} = req.params;
+  const {id} = req.body;
 
-//   if(!pieceExists(id, userID)) {
-//     res.status(400).json({
-//       message: `Error: Piece Not Found!`
-//     })
-//   }
-
-//   const foundPiece = user(userID).pieces.find(piece => piece.id === id)
-//   user(userID).pieces.splice(user(userID).outfits.indexOf(foundPiece), 1)
-
-//   res.status(201).json({
-//     message: `${id} Piece deleted!`
-//   })
-
-// })
+  try {
+    await database('piece').where('user_id', userID).where('id', id).del()
+    res.status(201).json({
+      message: `${id} Piece deleted!`
+    })
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
