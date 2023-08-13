@@ -84,7 +84,7 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', async(req, res) => {
 });
 
 app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', async(req, res) => {
-  const {pieceID} = req.params;
+  const { pieceID } = req.params;
 try {
   const otps = await database('outfit_to_piece').select().where('piece_id', pieceID)
   res.status(201).json({
@@ -96,31 +96,30 @@ try {
 })
 
 // // POST ENDPOINTS
-// app.post('/api/v1/data/closet/', (req, res) => {
-//   const { image, categoryID, id, notes, userID } = req.body;
-//   const requiredProperties = ['image', 'categoryID', 'id'];
+app.post('/api/v1/data/closet/', async(req, res) => {
+  const { image, categoryID, id, notes, userID } = req.body;
+  try {
+   await database('piece').insert({ 
+      id,
+      image, 
+      user_id: userID,
+      category_id: categoryID, 
+      note: notes
+      })
 
-//   for (let requiredParameter of requiredProperties) {
-//     if (req.body[requiredParameter] === undefined) {
-//       return res.status(422).json({
-//         message: `You are missing a required parameter of ${requiredParameter}`
-//       });
-//     }
-//   }
-
-//   if (!user(userID).pieces.some(piece => piece.id === id)) {
-//     user(userID).pieces.push({ id, image, categoryID, notes })
-//     res.status(201).json({
-//       message: `${id} Item added!`,
-//       newData: {
-//         id,
-//         image,
-//         categoryID,
-//         notes,
-//       }
-//     });
-//   }
-// })
+    res.status(201).json({
+        message: `${id} Item added!`,
+        newData: { 
+          id,
+          image, 
+          category_id: categoryID, 
+          notes, 
+          user_id: userID }
+      });
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 // app.post('/api/v1/data/user', (req, res) => {
 //   const { data } = app.locals;
