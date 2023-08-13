@@ -136,17 +136,19 @@ app.post('/api/v1/data/closet/', async(req, res) => {
 //   }
 // })
 
-// app.post('/api/v1/data/outfits/:userID', (req, res) => {
-//   const {userID} = req.params
-//   const {id, fullOutfitImage, notes} = req.body
-
-//   user(userID).outfits.push({id, fullOutfitImage, notes})
-//   res.status(201).json({
-//     message: `${id} Outfit added!`,
-//     newData: {id, fullOutfitImage, notes}
-//   })
-  
-// })
+app.post('/api/v1/data/outfits/:userID', async(req, res) => {
+  const {userID} = req.params
+  const {id, fullOutfitImage, notes} = req.body
+try {
+  await database('outfit').insert({id, user_id: userID, image: fullOutfitImage, note: notes})
+  res.status(201).json({
+    message: `${id} Outfit added!`,
+    newData: {id, fullOutfitImage, notes}
+  })
+} catch (error) {
+  res.status(500).json({error})
+}
+})
 
 // app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
 //   const {userID} = req.params
