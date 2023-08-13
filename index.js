@@ -6,7 +6,7 @@ const app = express();
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-app.locals = { title: 'Data'}
+app.locals = { title: 'Data' }
 
 //MIDDLEWARE
 app.use(cors());
@@ -32,28 +32,26 @@ app.get('/api/v1/data/closet/:userID', async (req, res) => {
     const closetData = await database('piece').select().where('user_id', userID)
     res.status(200).json({ closetData });
   } catch (error) {
-    res.status(500).json({error})
+    res.status(500).json({ error })
   }
 });
 
-
-app.get('/api/v1/data/closet/:userID/:category', async(req, res) => {
+app.get('/api/v1/data/closet/:userID/:category', async (req, res) => {
   const { category, userID } = req.params;
   try {
     const filteredPieces = await database('piece').select().where('user_id', userID).where('category_id', `CAT-${category}`)
     res.status(200).json({ filteredPieces });
   } catch (error) {
-    res.status(500).json({error})
+    res.status(500).json({ error })
   }
 });
 
-
-app.get('/api/v1/data/outfits/:userID', async(req, res) => {
+app.get('/api/v1/data/outfits/:userID', async (req, res) => {
   const { userID } = req.params;
   try {
     const pieces = await database('piece').select().where('user_id', userID)
     const outfitData = await database('outfit').select().where('user_id', userID)
-    const otps = await Promise.all(outfitData.map(async(outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
+    const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
 
     const fullOutfits = await Promise.all(otps[0].map(async (otp) => {
       const outfit = outfitData.find(out => out.id === otp.outfit_id)
@@ -61,63 +59,63 @@ app.get('/api/v1/data/outfits/:userID', async(req, res) => {
       const fullFit = { ...outfit, pieces: fitPieces }
       return fullFit
     }))
-    
-    res.status(200).json({ allData : fullOutfits});
+
+    res.status(200).json({ allData: fullOutfits });
   } catch (error) {
     console.log(error)
-    res.status(500).json({error})
+    res.status(500).json({ error })
   }
-  
 });
 
-app.get('/api/v1/data/outfits/:userID/:outfitID', async(req, res) => {
+app.get('/api/v1/data/outfits/:userID/:outfitID', async (req, res) => {
   const { userID, outfitID } = req.params;
   try {
     const outfitData = await database('outfit').select().where('user_id', userID).where('id', outfitID)
 
-    const otps = await Promise.all(outfitData.map(async(outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
+    const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
 
-    res.status(200).json({"outfitData": outfitData[0], "outfitToPieces": otps[0]});
+    res.status(200).json({ "outfitData": outfitData[0], "outfitToPieces": otps[0] });
   } catch (error) {
-    res.status(500).json({error})
+    res.status(500).json({ error })
   }
 });
 
-app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', async(req, res) => {
+app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', async (req, res) => {
   const { pieceID } = req.params;
-try {
-  const otps = await database('outfit_to_piece').select().where('piece_id', pieceID)
-  res.status(201).json({
-    data: otps
-  })
-} catch (error) {
-  res.status(500).json({error})
-}
+  try {
+    const otps = await database('outfit_to_piece').select().where('piece_id', pieceID)
+    res.status(201).json({
+      data: otps
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
 })
 
 // // POST ENDPOINTS
-app.post('/api/v1/data/closet/', async(req, res) => {
+app.post('/api/v1/data/closet/', async (req, res) => {
   const { image, categoryID, id, notes, userID } = req.body;
   try {
-   await database('piece').insert({ 
+    await database('piece').insert({
       id,
-      image, 
+      image,
       user_id: userID,
-      category_id: categoryID, 
+      category_id: categoryID,
       note: notes
-      })
+    })
 
     res.status(201).json({
-        message: `${id} Item added!`,
-        newData: { 
-          id,
-          image, 
-          category_id: categoryID, 
-          notes, 
-          user_id: userID }
-      });
+      message: `${id} Item added!`,
+      newData: {
+        id,
+        image,
+        category_id: categoryID,
+        notes,
+        user_id: userID
+      }
+    });
   } catch (error) {
-    res.status(500).json({error})
+    res.status(500).json({ error })
   }
 })
 
@@ -128,7 +126,7 @@ app.post('/api/v1/data/closet/', async(req, res) => {
 //   const credentialsFound = data.filter(user => {
 //     return user.credentials.username === username && user.credentials.password === password
 //   })
-  
+
 //   if(credentialsFound.length > 0) {
 //     res.status(201).json({credentialsFound});
 //   } else {
@@ -136,18 +134,18 @@ app.post('/api/v1/data/closet/', async(req, res) => {
 //   }
 // })
 
-app.post('/api/v1/data/outfits/:userID', async(req, res) => {
-  const {userID} = req.params
-  const {id, fullOutfitImage, notes} = req.body
-try {
-  await database('outfit').insert({id, user_id: userID, image: fullOutfitImage, note: notes})
-  res.status(201).json({
-    message: `${id} Outfit added!`,
-    newData: {id, fullOutfitImage, notes}
-  })
-} catch (error) {
-  res.status(500).json({error})
-}
+app.post('/api/v1/data/outfits/:userID', async (req, res) => {
+  const { userID } = req.params
+  const { id, fullOutfitImage, notes } = req.body
+  try {
+    await database('outfit').insert({ id, user_id: userID, image: fullOutfitImage, note: notes })
+    res.status(201).json({
+      message: `${id} Outfit added!`,
+      newData: { id, fullOutfitImage, notes }
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
 })
 
 // app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
@@ -160,7 +158,7 @@ try {
 //       message: 'Error: Piece not found!'
 //     })
 //   }
-  
+
 //   user(userID).outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
 //   res.status(201).json({
 //     message: `OTP-${otpID} Outfit to piece relationship added!`,
@@ -169,25 +167,23 @@ try {
 // })
 
 // //PATCH ENDPOINTS
-// app.patch('/api/v1/data/closet/:userID/:pieceID', (req, res) => {
-//   const {userID, pieceID} = req.params;
-//   const {notes} = req.body;
-//   const piece = pieceExists(pieceID, userID)
+app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
+  const {userID, pieceID} = req.params;
+  const {notes} = req.body;
 
-//   if(!piece) {
-//     return res.status(404).json({
-//       message: 'Error: Piece not found!'
-//     })
-//   }
+  try {
+    await database('piece').select().where('id', pieceID).update({note: notes})
+    const piece = await database('piece').select().where('id', pieceID)
+    console.log(piece)
 
-//   piece.notes = notes 
-
-//   res.status(201).json({
-//     message: `Success! Piece # ${pieceID} edited!`,
-//     newData: piece
-//   })
-  
-// })
+    res.status(201).json({
+      message: `Success! Piece # ${pieceID} edited!`,
+      newData: piece[0]
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
 
 // app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
 //   const { outfitID, userID } = req.params;
@@ -246,7 +242,7 @@ try {
 
 //   const foundOutfit = user(userID).outfits.find(outfit => outfit.id === id)
 //   user(userID).outfits.splice(user(userID).outfits.indexOf(foundOutfit), 1)
-  
+
 //   res.status(201).json({
 //     message: `${id} Outfit deleted!`
 //   })
