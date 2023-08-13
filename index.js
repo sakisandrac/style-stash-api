@@ -169,10 +169,10 @@ app.post('/api/v1/data/outfits/:userID', async (req, res) => {
 // //PATCH ENDPOINTS
 app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
   const {userID, pieceID} = req.params;
-  const {notes} = req.body;
+  const {notes, image} = req.body;
 
   try {
-    await database('piece').select().where('id', pieceID).update({note: notes})
+    await database('piece').select().where('id', pieceID).update({note: notes, image: image})
     const piece = await database('piece').select().where('id', pieceID)
     console.log(piece)
 
@@ -208,27 +208,20 @@ app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
 
 // //DELETE ENDPOINTS
 
-// app.delete('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
-//   const {userID} = req.params
-//   const {outfitID, pieceID} = req.body
+app.delete('/api/v1/data/outfit-to-pieces/:userID', async (req, res) => {
+  const { userID } = req.params
+  const { outfitID, pieceID } = req.body
 
-//   const foundOutfitToPiece = user(userID).outfitToPieces.find(combo => 
-//     combo.outfitID === outfitID && combo.pieceID === pieceID
-//   )
-
-//   user(userID).outfitToPieces.splice(user(userID).outfitToPieces.indexOf(foundOutfitToPiece), 1)
-
-//   if(!foundOutfitToPiece) {
-//     res.status(404).json({
-//       message: 'Error: Outfit to piece not found! Relationship nonexistant'
-//     })
-//   }
-
-//   res.status(201).json({
-//     message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
-//     newData: user(userID).outfitToPieces.filter(combo => combo.outfitID === outfitID)
-//   })
-// })
+  try {
+    const foundOutfitToPiece = await database('outfit_to_piece').select().where('piece_id', pieceID).where('outfit_id', outfitID)
+    await database('outfit_to_piece').select().where('id', foundOutfitToPiece[0].id).del()
+    res.status(201).json({
+      message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
 
 // app.delete('/api/v1/data/outfits/:userID', (req, res) => {
 //   const {userID} = req.params
