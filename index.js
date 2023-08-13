@@ -213,8 +213,7 @@ app.delete('/api/v1/data/outfit-to-pieces/:userID', async (req, res) => {
   const { outfitID, pieceID } = req.body
 
   try {
-    const foundOutfitToPiece = await database('outfit_to_piece').select().where('piece_id', pieceID).where('outfit_id', outfitID)
-    await database('outfit_to_piece').select().where('id', foundOutfitToPiece[0].id).del()
+    await database('outfit_to_piece').select().where('piece_id', pieceID).where('outfit_id', outfitID).del()
     res.status(201).json({
       message: `Success! Piece ${pieceID} removed from outfit ${outfitID}`,
     })
@@ -223,24 +222,19 @@ app.delete('/api/v1/data/outfit-to-pieces/:userID', async (req, res) => {
   }
 })
 
-// app.delete('/api/v1/data/outfits/:userID', (req, res) => {
-//   const {userID} = req.params
-//   const {id } = req.body
+app.delete('/api/v1/data/outfits/:userID', async(req, res) => {
+  const { userID } = req.params
+  const { id } = req.body
 
-//   if(!outfitExists(id, userID)) {
-//     res.status(400).json({
-//       message: `Error: Outfit Not Found!`
-//     })
-//   }
-
-//   const foundOutfit = user(userID).outfits.find(outfit => outfit.id === id)
-//   user(userID).outfits.splice(user(userID).outfits.indexOf(foundOutfit), 1)
-
-//   res.status(201).json({
-//     message: `${id} Outfit deleted!`
-//   })
-
-// })
+  try {
+    await database('outfit').select().where('id', id).del()
+    res.status(201).json({
+      message: `${id} Outfit deleted!`
+    })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
 
 // app.delete('/api/v1/data/piece/:userID', (req, res) => {
 //   const {userID} = req.params;
