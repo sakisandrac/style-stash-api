@@ -31,6 +31,13 @@ const pieces = [
       note: ""
     },
     {
+      id: "PIE-skirts-ex-123",
+      image: "https://i.imgur.com/qTbnxWX.png",
+      user_id: "1",
+      category_id: "CAT-skirts",
+      note: ""
+    },
+    {
       id: "PIE-skirts-ex-1",
       image: "https://i.imgur.com/GVKEPiN.jpg",
       user_id: "1",
@@ -171,6 +178,13 @@ const pieces = [
       note: ""
     },
     {
+      id: "PIE-bag-ex-910",
+      image: "https://i.imgur.com/b7q6V2n.png",
+      user_id: "1",
+      category_id: "CAT-bags",
+      note: ""
+    },
+    {
       id: "PIE-tops-ex-4",
       image: "https://i.imgur.com/9PpAK5C.jpg",
       user_id: "1",
@@ -220,6 +234,13 @@ const pieces = [
       note: ""
     },
     {
+      id: "PIE-OP-ex-62",
+      image: "https://i.imgur.com/v5eL6a5.png",
+      user_id: "1",
+      category_id: "CAT-onepieces",
+      note: ""
+    },
+    {
       id: "PIE-pants-ex-3",
       image: "https://i.imgur.com/RTmJKzc.jpg",
       user_id: "1",
@@ -241,6 +262,21 @@ const pieces = [
       note: ""
     },
     {
+      id: "PIE-shoes-ex-17",
+      image: "https://i.imgur.com/NQy8bMU.png",
+      user_id: "1",
+      category_id: "CAT-shoes",
+      note: ""
+    },
+    {
+      id: "PIE-tops-ex-117",
+      image: "https://i.imgur.com/ktoHjYO.png",
+      user_id: "1",
+      category_id: "CAT-tops",
+      note: ""
+    },
+  
+    {
       id: "PIE-tops-ex-8",
       image: "https://i.imgur.com/eXWOKl0.jpg",
       user_id: "1",
@@ -261,8 +297,6 @@ const pieces = [
       category_id: "CAT-skirts",
       note: ""
     },
-
-    //
     {
       id: "PIE-out-ex-1",
       image: "https://i.imgur.com/ceEJTP4.jpg",
@@ -333,6 +367,14 @@ const pieces = [
       category_id: "CAT-shoes",
       note: ""
     },
+    {
+      id: "PIE-out-ex-17",
+      image: "https://i.imgur.com/NnKQ4MG.png",
+      user_id: "1",
+      category_id: "CAT-outerwear",
+      note: ""
+    },
+    
     {
       id: "PIE-bags-ex-6",
       image: "https://i.imgur.com/7FSXbCC.jpg",
@@ -548,11 +590,9 @@ const pieces = [
 
 const outfits = 
  [
-    {id: "OUT-outfit-sc-1", user_id: "1", image: "https://i.imgur.com/0CPqUal.png", note: ""},
-    {id: "OUT-outfit-sc-2", user_id: "1", image: "https://i.imgur.com/EqL59lG.jpg", note: ""},
     {id: "OUT-outfit-sc-3", user_id: "1", image: "https://i.imgur.com/Ndq51uq.jpg", note: ""},
-    {id: "OUT-outfit-sc-4", user_id: "1", image: "https://i.imgur.com/2ZBY3ix.jpg", note: ""},
-    {id: "OUT-outfit-sc-5", user_id: "1", image: "https://i.imgur.com/UxIRW1c.jpg", note: ""},
+    {id: "OUT-outfit-sc-5", user_id: "1", image: "https://i.imgur.com/2ZBY3ix.jpg", note: ""},
+    {id: "OUT-outfit-sc-4", user_id: "1", image: "https://i.imgur.com/UxIRW1c.jpg", note: ""},
     {id: "OUT-outfit-sc-6", user_id: "1", image: "", note: ""},
     {id: "OUT-outfit-lg-1", user_id: "2", image: "https://i.imgur.com/Oo4qkhn.jpeg", note: ""},
     {id: "OUT-outfit-lg-2", user_id: "2", image: "https://i.imgur.com/0CPqUal.png", note: ""},
@@ -564,28 +604,17 @@ const outfits =
   ]
 
 const outfitToPieces = [
-  {id: "OTP-otp-sc-1", outfit_id: "OUT-outfit-sc-1", piece_id: 'PIE-pants-ex-1'},
-  {id: "OTP-otp-sc-2", outfit_id: "OUT-outfit-sc-1", piece_id: 'PIE-tops-ex-1'},
-  {id: "OTP-otp-sc-3", outfit_id: "OUT-outfit-sc-1", piece_id: 'PIE-accessories-ex-1'},
-  {id: "OTP-otp-sc-4", outfit_id: "OUT-outfit-sc-1", piece_id: 'PIE-shoes-ex-1'},
-  {id: "OTP-otp-sc-5", outfit_id: "OUT-outfit-sc-1", piece_id: 'PIE-bags-ex-1'},
-  {id: "OTP-otp-sc-6", outfit_id: "OUT-outfit-sc-2", piece_id: 'PIE-onepiece-ex-1'},
-  {id: "OTP-otp-sc-7", outfit_id: "OUT-outfit-sc-2", piece_id: 'PIE-outerwear-ex-1'},
-  {id: "OTP-otp-sc-8", outfit_id: "OUT-outfit-sc-2", piece_id: 'PIE-shoes-ex-1'},
-  {id: "OTP-otp-sc-9", outfit_id: "OUT-outfit-sc-2", piece_id: 'PIE-bags-ex-1'},
   {id: "OTP-otp-sc-10", outfit_id: "OUT-outfit-sc-3", piece_id: 'PIE-shoes-ex-8'},
   {id: "OTP-otp-sc-11", outfit_id: "OUT-outfit-sc-3", piece_id: 'PIE-bags-ex-3'},
-  {id: "OTP-otp-sc-12", outfit_id: "OUT-outfit-sc-3", piece_id: 'PIE-op-ex-10'},
-  {id: "OTP-otp-sc-13", outfit_id: "OUT-outfit-sc-3", piece_id: 'PIE-out-ex-1'},
-  {id: "OTP-otp-sc-14", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-op-ex-6'},
-  {id: "OTP-otp-sc-15", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-pants-ex-6'},
-  {id: "OTP-otp-sc-16", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-shoes-ex-3'},
-  {id: "OTP-otp-sc-17", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-tops-ex-9'},
-  {id: "OTP-otp-sc-18", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-tops-ex-6'},
-  {id: "OTP-otp-sc-19", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-skirts-ex-6'},
-  {id: "OTP-otp-sc-20", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-acc-ex-2'},
-  {id: "OTP-otp-sc-21", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-op-ex-2'},
-  {id: "OTP-otp-sc-22", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-bags-ex-1'},
+  {id: "OTP-otp-sc-13", outfit_id: "OUT-outfit-sc-3", piece_id: 'PIE-OP-ex-62'},
+  {id: "OTP-otp-sc-14", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-tops-ex-117'},
+  {id: "OTP-otp-sc-15", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-out-ex-17'},
+  {id: "OTP-otp-sc-16", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-shoes-ex-1'},
+  {id: "OTP-otp-sc-17", outfit_id: "OUT-outfit-sc-4", piece_id: 'PIE-skirts-ex-123'},
+  {id: "OTP-otp-sc-18", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-pants-ex-1'},
+  {id: "OTP-otp-sc-19", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-bag-ex-910'},
+  {id: "OTP-otp-sc-20", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-shoes-ex-17'},
+  {id: "OTP-otp-sc-21", outfit_id: "OUT-outfit-sc-5", piece_id: 'PIE-outer-ex-2'},
   {id: "OTP-otp-sc-23", outfit_id: "OUT-outfit-sc-6", piece_id: 'PIE-shoes-ex-8'},
   {id: "OTP-otp-sc-24", outfit_id: "OUT-outfit-sc-6", piece_id: 'PIE-bags-ex-6'},
   {id: "OTP-otp-sc-25", outfit_id: "OUT-outfit-sc-6", piece_id: 'PIE-tops-ex-9'},
