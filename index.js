@@ -56,14 +56,15 @@ app.get('/api/v1/data/outfits/:userID', async (req, res) => {
   }
 });
 
-app.get('/api/v1/data/outfits/:outfitID', async (req, res) => {
-  const {outfitID } = req.params;
+app.get('/api/v1/data/outfit/:outfitID', async (req, res) => {
+  const { outfitID } = req.params;
   try {
     const outfitData = await database('outfit').select().where('id', outfitID)
 
     const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
-
-    res.status(200).json({ "outfitData": outfitData[0], "outfitToPieces": otps[0] });
+    const pieces = await Promise.all(otps[0].map(async (otp) => await database('piece').select().where('id', otp.piece_id)))
+    
+    res.status(200).json({ "outfitData": outfitData[0], "outfitPieces": pieces.flat() });
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -158,7 +159,6 @@ app.patch('/api/v1/data/closet/:pieceID',async(req, res) => {
   try {
     await database('piece').select().where('id', pieceID).update({note: notes, image: image})
     const piece = await database('piece').select().where('id', pieceID)
-    console.log(piece)
 
     res.status(201).json({
       message: `Success! Piece # ${pieceID} edited!`,
@@ -203,6 +203,7 @@ app.delete('/api/v1/data/outfits', async(req, res) => {
   const { id } = req.body
 
   try {
+    await database('outfit_to_piece').select().where('outfit_id', id).del()
     await database('outfit').select().where('id', id).del()
     res.status(201).json({
       message: `${id} Outfit deleted!`
@@ -216,6 +217,7 @@ app.delete('/api/v1/data/piece', async (req, res) => {
   const {id} = req.body;
 
   try {
+    await database('outfit_to_piece').select().where('piece_id', id).del()
     await database('piece').where('id', id).del()
     res.status(201).json({
       message: `${id} Piece deleted!`
