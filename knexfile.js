@@ -3,6 +3,7 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+require('dotenv').config()
 module.exports = {
 
   development: {
@@ -12,7 +13,7 @@ module.exports = {
       port: '5433',
       database: 'stylestash',
       user:     'postgres',
-      password: 'forever4321'
+      password: process.env.NODE_DB_PASS
     },
     migrations: {
       directory: './db/migrations'

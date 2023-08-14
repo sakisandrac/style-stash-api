@@ -12,18 +12,6 @@ app.locals = { title: 'Data' }
 app.use(cors());
 app.use(express.json());
 
-//HELPER FUNCTIONS / VARIABLES
-const checkID = (type) => {
-  return (itemID, userID) => {
-    const user = data.find(user => user.userID === userID)
-    return user[type].find(item => item.id === itemID)
-  }
-}
-const outfitExists = checkID('outfits')
-const pieceExists = checkID('pieces')
-const user = (userID) => {
-  return data.find(user => user.userID === userID)
-}
 
 // GET ENDPOINTS
 app.get('/api/v1/data/closet/:userID', async (req, res) => {
@@ -32,6 +20,7 @@ app.get('/api/v1/data/closet/:userID', async (req, res) => {
     const closetData = await database('piece').select().where('user_id', userID)
     res.status(200).json({ closetData });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error })
   }
 });
@@ -67,10 +56,10 @@ app.get('/api/v1/data/outfits/:userID', async (req, res) => {
   }
 });
 
-app.get('/api/v1/data/outfits/:userID/:outfitID', async (req, res) => {
-  const { userID, outfitID } = req.params;
+app.get('/api/v1/data/outfits/:outfitID', async (req, res) => {
+  const {outfitID } = req.params;
   try {
-    const outfitData = await database('outfit').select().where('user_id', userID).where('id', outfitID)
+    const outfitData = await database('outfit').select().where('id', outfitID)
 
     const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
 
@@ -80,7 +69,7 @@ app.get('/api/v1/data/outfits/:userID/:outfitID', async (req, res) => {
   }
 });
 
-app.get('/api/v1/data/outfit-piece-amount/:userID/:pieceID', async (req, res) => {
+app.get('/api/v1/data/outfit-piece-amount/:pieceID', async (req, res) => {
   const { pieceID } = req.params;
   try {
     const otps = await database('outfit_to_piece').select().where('piece_id', pieceID)
@@ -162,8 +151,8 @@ app.post('/api/v1/data/outfit-to-pieces', async (req, res) => {
 })
 
 // //PATCH ENDPOINTS
-app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
-  const {userID, pieceID} = req.params;
+app.patch('/api/v1/data/closet/:pieceID',async(req, res) => {
+  const {pieceID} = req.params;
   const {notes, image} = req.body;
 
   try {
@@ -180,12 +169,12 @@ app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
   }
 })
 
-app.patch('/api/v1/data/outfit/:userID/:outfitID', async(req,res) => {
-  const { outfitID, userID } = req.params;
+app.patch('/api/v1/data/outfit/:outfitID', async(req,res) => {
+  const { outfitID } = req.params;
   const { fullOutfitImage, notes } = req.body
 
   try {
-    const patchedOutfit = await database('outfit').where('user_id', userID).where('id', outfitID).update({image: fullOutfitImage, note: notes}, ['image', 'note'])
+    const patchedOutfit = await database('outfit').where('id', outfitID).update({image: fullOutfitImage, note: notes}, ['image', 'note'])
     res.status(201).json({
       message: 'Success! Full outfit image and notes updated.', 
       newData: { outfitID: outfitID, fullOutfitImage: patchedOutfit[0].image, notes: patchedOutfit[0].note}
@@ -197,8 +186,7 @@ app.patch('/api/v1/data/outfit/:userID/:outfitID', async(req,res) => {
 
 // //DELETE ENDPOINTS
 
-app.delete('/api/v1/data/outfit-to-pieces/:userID', async (req, res) => {
-  const { userID } = req.params
+app.delete('/api/v1/data/outfit-to-pieces', async (req, res) => {
   const { outfitID, pieceID } = req.body
 
   try {
@@ -211,8 +199,7 @@ app.delete('/api/v1/data/outfit-to-pieces/:userID', async (req, res) => {
   }
 })
 
-app.delete('/api/v1/data/outfits/:userID', async(req, res) => {
-  const { userID } = req.params
+app.delete('/api/v1/data/outfits', async(req, res) => {
   const { id } = req.body
 
   try {
@@ -225,12 +212,11 @@ app.delete('/api/v1/data/outfits/:userID', async(req, res) => {
   }
 })
 
-app.delete('/api/v1/data/piece/:userID', async (req, res) => {
-  const {userID} = req.params;
+app.delete('/api/v1/data/piece', async (req, res) => {
   const {id} = req.body;
 
   try {
-    await database('piece').where('user_id', userID).where('id', id).del()
+    await database('piece').where('id', id).del()
     res.status(201).json({
       message: `${id} Piece deleted!`
     })
