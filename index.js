@@ -45,7 +45,6 @@ app.get('/api/v1/data/outfits/:userID', async (req, res) => {
       const otps = await database('outfit_to_piece').select().where('outfit_id', outfit.id)
       const fitPieces = otps.flat().filter(outToPie => outToPie.outfit_id === outfit.id).map((pie) => {
         const dbPiece = pieces.find(p => pie.piece_id === p.id)
-        console.log('dbPiece', dbPiece)
         return {id: dbPiece.id, notes: dbPiece.note, image: dbPiece.image, categoryID: dbPiece.category_id}
       })
       const fullFit = {  id: outfit.id, fullOutfitImage: outfit.image, notes: outfit.note, pieces: fitPieces }
@@ -63,11 +62,13 @@ app.get('/api/v1/data/outfit/:outfitID', async (req, res) => {
   const { outfitID } = req.params;
   try {
     const outfitData = await database('outfit').select().where('id', outfitID)
-
-    const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
-    const pieces = await Promise.all(otps[0].map(async (otp) => await database('piece').select().where('id', otp.piece_id)))
     
-    res.status(200).json({ "outfitData": outfitData[0], "outfitPieces": pieces.flat() });
+    const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
+    const pieces = await Promise.all(otps[0].map(async (otp) => {
+      const dbPiece = await database('piece').select().where('id', otp.piece_id)
+      return {id: dbPiece[0].id, notes: dbPiece[0].note, image: dbPiece[0].image, categoryID: dbPiece[0].category_id}
+    }))
+    res.status(200).json({ "outfitData": {id: outfitData[0].id, fullOutfitImage: outfitData[0].image, notes: outfitData[0].note}, "outfitPieces": pieces.flat() });
   } catch (error) {
     res.status(500).json({ error })
   }
