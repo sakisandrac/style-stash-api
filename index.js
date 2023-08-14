@@ -40,12 +40,14 @@ app.get('/api/v1/data/outfits/:userID', async (req, res) => {
   try {
     const pieces = await database('piece').select().where('user_id', userID)
     const outfitData = await database('outfit').select().where('user_id', userID)
-    const otps = await Promise.all(outfitData.map(async (outfit) => await database('outfit_to_piece').select().where('outfit_id', outfit.id)))
 
-    const fullOutfits = await Promise.all(otps[0].map(async (otp) => {
-      const outfit = outfitData.find(out => out.id === otp.outfit_id)
-      const fitPieces = otps[0].filter(outToPie => outToPie.outfit_id === otp.outfit_id).map(pie => pieces.find(p => pie.piece_id === p.id))
-      const fullFit = { ...outfit, pieces: fitPieces }
+    const fullOutfits = await Promise.all(outfitData.map(async (outfit) => {
+      const otps = await database('outfit_to_piece').select().where('outfit_id', outfit.id)
+      const fitPieces = otps.flat().filter(outToPie => outToPie.outfit_id === outfit.id).map(pie => {
+        const dbPiece = pieces.find(p => pie.piece_id === p.id)
+        return {id: dbPiece.id, notes: dbPiece.note, image: dbPiece.image, categoryID: dbPiece.category_id}
+      })
+      const fullFit = {  id: outfit.id, fullOutfitImage: outfit.image, notes: outfit.note, pieces: fitPieces }
       return fullFit
     }))
 
