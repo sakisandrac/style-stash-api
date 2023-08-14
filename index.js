@@ -119,20 +119,19 @@ app.post('/api/v1/data/closet/', async (req, res) => {
   }
 })
 
-// app.post('/api/v1/data/user', (req, res) => {
-//   const { data } = app.locals;
-//   const { username, password } = req.body;
-
-//   const credentialsFound = data.filter(user => {
-//     return user.credentials.username === username && user.credentials.password === password
-//   })
-
-//   if(credentialsFound.length > 0) {
-//     res.status(201).json({credentialsFound});
-//   } else {
-//     res.status(422).json({message: 'Error: Incorrect username or password!'})
-//   }
-// })
+app.post('/api/v1/data/user', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const credentialsFound = await database('user').select().where('username', username).where('password', password)
+    if(credentialsFound.length) {
+      res.status(201).json({credentialsFound});
+    } else {
+      res.status(422).json({message: 'Error: Incorrect username or password!'})
+    }
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 app.post('/api/v1/data/outfits/:userID', async (req, res) => {
   const { userID } = req.params
@@ -148,23 +147,19 @@ app.post('/api/v1/data/outfits/:userID', async (req, res) => {
   }
 })
 
-// app.post('/api/v1/data/outfit-to-pieces/:userID', (req, res) => {
-//   const {userID} = req.params
-//   const {outfitID, pieceID} = req.body
-//   const otpID = uuidv4()
-
-//   if(!pieceExists(pieceID, userID)) {
-//     return res.status(404).json({
-//       message: 'Error: Piece not found!'
-//     })
-//   }
-
-//   user(userID).outfitToPieces.push({id: `OTP-${otpID}`, outfitID, pieceID})
-//   res.status(201).json({
-//     message: `OTP-${otpID} Outfit to piece relationship added!`,
-//     newData: {id:`OTP-${otpID}`, outfitID, pieceID}
-//   })
-// })
+app.post('/api/v1/data/outfit-to-pieces', async (req, res) => {
+  const {outfitID, pieceID} = req.body
+  const otpID = uuidv4()
+  try {
+    const newOtp = await database('outfit_to_piece').insert({ id: `OTP-${otpID}`, outfit_id: outfitID, piece_id: pieceID }).returning('*')
+    res.status(201).json({
+      message: `OTP-${otpID} Outfit to piece relationship added!`,
+      newData: { id: newOtp[0].id, outfitID: newOtp[0].outfit_id, pieceID: newOtp[0].piece_id }
+    })
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 // //PATCH ENDPOINTS
 app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
@@ -185,26 +180,20 @@ app.patch('/api/v1/data/closet/:userID/:pieceID',async(req, res) => {
   }
 })
 
-// app.patch('/api/v1/data/outfit/:userID/:outfitID', (req,res) => {
-//   const { outfitID, userID } = req.params;
-//   const { fullOutfitImage, notes } = req.body
+app.patch('/api/v1/data/outfit/:userID/:outfitID', async(req,res) => {
+  const { outfitID, userID } = req.params;
+  const { fullOutfitImage, notes } = req.body
 
-//   if(!outfitExists(outfitID, userID)) {
-//     res.status(404).json({
-//       message: 'Error: Outfit not found!'
-//     })
-//   }
-
-//   const foundOutfit = user(userID).outfits.find(outfit => outfit.id === outfitID)
-//   foundOutfit.fullOutfitImage = fullOutfitImage
-//   foundOutfit.notes = notes
-
-//   res.status(201).json({
-//     message: 'Success! Full outfit image updated.', 
-//     newData: {outfitID, fullOutfitImage}
-//   })
-
-// })
+  try {
+    const patchedOutfit = await database('outfit').where('user_id', userID).where('id', outfitID).update({image: fullOutfitImage, note: notes}, ['image', 'note'])
+    res.status(201).json({
+      message: 'Success! Full outfit image and notes updated.', 
+      newData: { outfitID: outfitID, fullOutfitImage: patchedOutfit[0].image, notes: patchedOutfit[0].note}
+    })
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 // //DELETE ENDPOINTS
 
@@ -236,24 +225,19 @@ app.delete('/api/v1/data/outfits/:userID', async(req, res) => {
   }
 })
 
-// app.delete('/api/v1/data/piece/:userID', (req, res) => {
-//   const {userID} = req.params;
-//   const {id} = req.body;
+app.delete('/api/v1/data/piece/:userID', async (req, res) => {
+  const {userID} = req.params;
+  const {id} = req.body;
 
-//   if(!pieceExists(id, userID)) {
-//     res.status(400).json({
-//       message: `Error: Piece Not Found!`
-//     })
-//   }
-
-//   const foundPiece = user(userID).pieces.find(piece => piece.id === id)
-//   user(userID).pieces.splice(user(userID).outfits.indexOf(foundPiece), 1)
-
-//   res.status(201).json({
-//     message: `${id} Piece deleted!`
-//   })
-
-// })
+  try {
+    await database('piece').where('user_id', userID).where('id', id).del()
+    res.status(201).json({
+      message: `${id} Piece deleted!`
+    })
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
 
 app.listen(port, () => {
   console.log(`${app.locals.title} is now running on http://localhost:${port} !`)
