@@ -20,7 +20,6 @@ app.get('/api/v1/data/closet/:userID', async (req, res) => {
     const closetData = await database('piece').select().where('user_id', userID)
     res.status(200).json({ closetData });
   } catch (error) {
-    console.log(error)
     res.status(500).json({ error })
   }
 });
@@ -33,7 +32,7 @@ app.get('/api/v1/data/closet/:userID/:category', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error })
   }
-});
+})
 
 app.get('/api/v1/data/outfits/:userID', async (req, res) => {
   const { userID } = req.params;
@@ -53,7 +52,6 @@ app.get('/api/v1/data/outfits/:userID', async (req, res) => {
 
     res.status(200).json({ allData: fullOutfits });
   } catch (error) {
-    console.log(error)
     res.status(500).json({ error })
   }
 });
@@ -117,7 +115,7 @@ app.post('/api/v1/data/user', async (req, res) => {
   const { username, password } = req.body;
   try {
     const credentialsFound = await database('user').select().where('username', username).where('password', password)
-    if(credentialsFound.length) {
+    if(credentialsFound.length > 0) {
       res.status(201).json({credentialsFound});
     } else {
       res.status(422).json({message: 'Error: Incorrect username or password!'})
@@ -215,7 +213,7 @@ app.delete('/api/v1/data/outfits', async(req, res) => {
   } catch (error) {
     res.status(500).json({ error })
   }
-})
+});
 
 app.delete('/api/v1/data/piece', async (req, res) => {
   const {id} = req.body;

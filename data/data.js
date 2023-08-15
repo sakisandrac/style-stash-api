@@ -185,13 +185,6 @@ const pieces = [
       note: ""
     },
     {
-      id: "PIE-tops-ex-4",
-      image: "https://i.imgur.com/9PpAK5C.jpg",
-      user_id: "1",
-      category_id: "CAT-tops",
-      note: ""
-    },
-    {
       id: "PIE-bags-ex-2",
       image: "https://i.imgur.com/tMJU4uN.jpg",
       user_id: "1",
